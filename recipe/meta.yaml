@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/jsonpatch-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 9fcd4009c41e6d12348b4a0ff2563ba56a2923a7dfee731d004e212e1ee5030c
 
 build:
@@ -19,7 +19,6 @@ requirements:
     - pip
     - setuptools
     - wheel
-    - pypandoc 1.6.3
   run:
     - python
     - jsonpointer >=1.9
