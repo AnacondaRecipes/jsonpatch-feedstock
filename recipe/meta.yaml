@@ -1,28 +1,25 @@
 {% set name = "jsonpatch" %}
-{% set version = "1.32" %}
-{% set bundle = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash_val = "b6ddfe6c3db30d81a96aaeceb6baf916094ffa23d7dd5fa2c13e13f8b6e600c2" %}
+{% set version = "1.33" %}
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  {{ hash_type }}: {{ hash_val }}
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/jsonpatch-{{ version }}.tar.gz
+  sha256: 9fcd4009c41e6d12348b4a0ff2563ba56a2923a7dfee731d004e212e1ee5030c
 
 build:
   number: 0
-  noarch: python
-  script: python -m pip install --no-deps --ignore-installed .
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
-  build:
+  host:
     - python
     - pip
-
+    - setuptools
+    - wheel
+    - pypandoc 1.6.3
   run:
     - python
     - jsonpointer >=1.9
@@ -30,17 +27,29 @@ requirements:
 test:
   imports:
     - jsonpatch
+  requires:
+    - pip
+    - pytest
+  source_files:
+    - tests.*
+  commands:
+    - pip check
+    - pytest tests.py
 
 about:
   home: https://github.com/stefankoegl/python-json-patch
-  license: BSD 3-Clause
+  license: BSD-3-Clause
   license_family: BSD
-  license_file: COPYING
-  summary: 'Apply JSON-Patches (RFC 6902)'
+  license_file: LICENSE
+  summary: Apply JSON-Patches (RFC 6902)
+  description: |
+    python-json-patch is a Python library for applying JSON patches (RFC 6902).
+    Python 2.7 and 3.4+ are supported. Tests are run on both CPython and PyPy.
   dev_url: https://github.com/stefankoegl/python-json-patch
-  doc_url: https://python-json-patch.readthedocs.io/en/latest/
+  doc_url: https://python-json-patch.readthedocs.io
 
 extra:
   recipe-maintainers:
+    - pavelzw
     - anguslees
     - pmlandwehr
